@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="请填写H5 Token配置" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/deeplink_textview"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:text="link_url" />
+
+            <EditText
+                android:id="@+id/link_url"
+                style="@style/deeplink_editortext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="iqiyi://mobile/player"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/deeplink_textview"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:text="register_biz" />
+
+            <EditText
+                android:id="@+id/register_params"
+                style="@style/deeplink_editortext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/deeplink_textview"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:text="timestamp" />
+
+            <EditText
+                android:id="@+id/timestamp"
+                style="@style/deeplink_editortext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:enabled="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/deeplink_textview"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:text="message" />
+
+            <EditText
+                android:id="@+id/pop_message"
+                style="@style/deeplink_editortext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="播放一出好戏"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="#e7e7e7" />
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:minHeight="44dp"
+            android:text="@string/h5_token_json_tips" />
+
+        <TextView
+            android:id="@+id/h5_token_json"
+            style="@style/deeplink_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:background="#e7e7e7" />
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:text="@string/h5_token_data_tips"/>
+
+        <TextView
+            android:id="@+id/h5_token_data"
+            style="@style/deeplink_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textIsSelectable="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:paddingLeft="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/save_data"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:text="保存到剪切板"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

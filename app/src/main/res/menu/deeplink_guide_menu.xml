@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/iqiyi_deepplink"
+        android:title="@string/iqiyi_deeplink" />
+
+    <item android:id="@+id/iqiyi_register_biz"
+        android:title="@string/iqiyi_register_biz" />
+
+    <item android:id="@+id/iqiyi_h5_token"
+        android:title="@string/iqiyi_h5_token" />
+</menu>

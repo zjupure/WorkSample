@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/deeplink_textview"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="请填写跳转DeepLink配置" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="scheme:" />
+
+        <EditText
+            android:id="@+id/url_scheme"
+            style="@style/deeplink_editortext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="iqiyi"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="host:" />
+
+        <EditText
+            android:id="@+id/url_host"
+            style="@style/deeplink_editortext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="mobile"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="path:" />
+
+        <EditText
+            android:id="@+id/url_path"
+            style="@style/deeplink_editortext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="player"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="44dp"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/deeplink_textview"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="params:" />
+
+        <EditText
+            android:id="@+id/url_params"
+            style="@style/deeplink_editortext"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="aid=991049000"/>
+    </LinearLayout>
+
+    <TextView
+        style="@style/deeplink_textview"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:text="跳转DeepLink链接结果" />
+
+    <EditText
+        android:id="@+id/deeplink_input_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:paddingLeft="12dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/send_intent"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="点击发送"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/save_link"
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:text="保存到剪切板"
+            android:textAllCaps="false" />
+    </LinearLayout>
+</LinearLayout>
