@@ -15,6 +15,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -229,4 +230,32 @@ public class DeviceUtil {
         }
         return cmdline;
     }
+
+    /**
+     * 检查设备是否Root过
+     */
+    public static boolean isDeviceRooted() {
+        String[] suDirs = new String[]{"/system/bin/", "/system/xbin/", "/system/sbin", "/sbin/", "/vendor/bin/",
+                "/data/local/xbin/", "/data/local/bin/", "/system/sd/xbin/"};
+        // 搜索su文件是否存在
+        for (String suDir : suDirs) {
+            File file = new File(suDir + "su");
+            if (file.exists()) {
+                return true;
+            }
+        }
+        // 检测Superuser.apk是否存在
+        File file = new File("/system/app/Superuser.apk");
+        return file.exists();
+    }
+
+
+
+
+
+
+
+
+
+
 }

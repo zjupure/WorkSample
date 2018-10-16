@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="InverseTextView">
+        <attr name="itv_leftColor" format="color" />
+        <attr name="itv_rightColor" format="color" />
+        <attr name="itv_progress" format="integer" />
+    </declare-styleable>
+
+</resources>
