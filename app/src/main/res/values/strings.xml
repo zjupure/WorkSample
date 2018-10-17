@@ -6,6 +6,11 @@
     <string name="iqiyi_register_biz">IQIYI Register Biz</string>
     <string name="iqiyi_h5_token">IQIYI H5 Token</string>
 
+
+
     <string name="h5_token_json_tips">H5 Token JSON数据结果:</string>
     <string name="h5_token_data_tips">H5 Token JSON加密结果:</string>
+
+    <string name="accessibility_title">Accessibility Sample</string>
+    <string name="accessibility_desc">WorkSample自动装</string>
 </resources>
