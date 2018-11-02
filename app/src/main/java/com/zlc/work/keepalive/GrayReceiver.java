@@ -12,7 +12,12 @@ public class GrayReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent gray = new Intent(context, GrayService.class);
-        context.startService(gray);
+
+        try {
+            Intent gray = new Intent(context, GrayService.class);
+            context.startService(gray);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
     }
 }

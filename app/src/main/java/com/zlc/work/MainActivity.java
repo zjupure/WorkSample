@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.zlc.work.autoinstall.AutoInstallActivity;
 import com.zlc.work.deeplink.DeepLinkActivity;
+import com.zlc.work.webview.WebviewActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void findViews() {
         findViewById(R.id.deeplink).setOnClickListener(this);
         findViewById(R.id.autoinstall).setOnClickListener(this);
+        findViewById(R.id.webview).setOnClickListener(this);
     }
 
 
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.autoinstall:
                 intent.setClass(this, AutoInstallActivity.class);
+                break;
+            case R.id.webview:
+                intent.setClass(this, WebviewActivity.class);
                 break;
             default:
                 break;

@@ -37,14 +37,14 @@ public class IoUtil {
      * 获取文件URI
      */
     public static Uri getUriFromFile(Context context, File file) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            try {
-                String authority = context.getPackageName() + ".fileprovider";
-                return FileProvider.getUriForFile(context, authority, file);
-            } catch (IllegalArgumentException e) {
-                // ignore
-            }
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            try {
+//                String authority = context.getPackageName() + ".fileprovider";
+//                return FileProvider.getUriForFile(context, authority, file);
+//            } catch (IllegalArgumentException e) {
+//                // ignore
+//            }
+//        }
         return Uri.fromFile(file);
     }
 

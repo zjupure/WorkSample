@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.zlc.work">
 
     <!-- 网络访问相关权限 -->
@@ -10,6 +11,7 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 存储卡访问相关权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -21,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:name=".MainApplication"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,6 +43,10 @@
         <activity android:name=".deeplink.QiyiH5TokenActivity"
             android:label="@string/iqiyi_h5_token" />
 
+        <!-- Webview页面 -->
+        <activity android:name=".webview.WebviewActivity"
+            android:label="@string/webview" />
+
         <!-- 自动安装功能 -->
         <activity android:name=".autoinstall.AutoInstallActivity"
             android:label="@string/accessibility_title"/>
@@ -54,6 +61,29 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_config" />
         </service>
+
+        <!-- https://android.googlesource.com/platform/packages/apps/PackageInstaller/+/master/AndroidManifest.xml -->
+        <activity android:name=".autoinstall.ApkInstallerActivity">
+            <intent-filter android:priority="1">
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.INSTALL_PACKAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:scheme="content" />
+                <data android:mimeType="application/vnd.android.package-archive" />
+            </intent-filter>
+            <intent-filter android:priority="1">
+                <action android:name="android.intent.action.INSTALL_PACKAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="file" />
+                <data android:scheme="package" />
+                <data android:scheme="content" />
+            </intent-filter>
+            <intent-filter android:priority="1">
+                <action android:name="android.content.pm.action.CONFIRM_PERMISSIONS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <provider
             android:authorities="${applicationId}.fileprovider"

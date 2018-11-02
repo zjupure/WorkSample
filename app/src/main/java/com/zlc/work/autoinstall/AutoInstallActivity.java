@@ -3,6 +3,7 @@ package com.zlc.work.autoinstall;
 import android.Manifest;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,19 +12,22 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zlc.work.R;
-import com.zlc.work.util.IoUtil;
+import com.zlc.work.util.OemInstallUtil;
 import com.zlc.work.util.SettingsUtil;
 import com.zlc.work.util.ToastCompat;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,8 +44,8 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
     @BindView(R.id.vivo_password) EditText vivoPwdInput;
     @BindView(R.id.vivo_group) LinearLayout vivoGroup;
 
-    @BindView(R.id.jump_setting) Button jumpSettings;
-    @BindView(R.id.install_apk) Button installApk;
+    @BindView(R.id.apk_list) RecyclerView mRecyclerView;
+    private ApkRecyclerAdapter mAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +64,10 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
             vivoGroup.setVisibility(View.GONE);
         }
 
-        jumpSettings.setOnClickListener(this);
-        installApk.setOnClickListener(this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new ApkRecyclerAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+        collectApkInfos();
     }
 
     @Override
@@ -86,10 +92,23 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void installApk() {
-        if (jumpToSettingsIfNeed()) {
+
+    private void collectApkInfos() {
+        boolean hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_STORAGE);
             return;
         }
+
+        CollectApkTask task = new CollectApkTask();
+        task.execute();
+    }
+
+    private void installApk() {
+//        if (jumpToSettingsIfNeed()) {
+//            return;
+//        }
         // 开启了自动安装辅助功能, 准备安装apk
         boolean hasPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED;
@@ -103,7 +122,8 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
             File[] files = extDir.listFiles(new FileFilter() {
                 @Override
                 public boolean accept(File pathname) {
-                    return pathname.isFile() && pathname.getName().endsWith(".apk");
+                    String name = pathname.getName();
+                    return pathname.isFile() && name.endsWith(".apk") && (name.contains("xiaoxiaole_game"));
                 }
             });
 
@@ -127,12 +147,9 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
             e.printStackTrace();
         }
 
-        if (prePi == null) {
-            // 未安装过
-            IoUtil.installApkFile(this, apkFile);
-        } else if (prePi.versionCode < versionCode) {
-            // 安装的是低版本的apk, 覆盖安装
-            IoUtil.installApkFile(this, apkFile);
+        if (prePi == null || prePi.versionCode < versionCode) {
+            // 未安装过或者是低版本
+            OemInstallUtil.installApkFile(this, apkFile);
         } else {
             String name = prePi.applicationInfo.loadLabel(pm).toString();
             ToastCompat.makeText(this, name + "已经安装过了", Toast.LENGTH_SHORT).show();
@@ -152,5 +169,54 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
             return true;
         }
         return false;
+    }
+
+
+    public class CollectApkTask extends AsyncTask<Void, Void, List<ApkItem>> {
+        @Override
+        protected List<ApkItem> doInBackground(Void... voids) {
+
+            List<ApkItem> result = new ArrayList<>();
+            File rootDir = Environment.getExternalStorageDirectory();
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+                scanDir(rootDir, result);
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(List<ApkItem> list) {
+            mAdapter.setData(list);
+        }
+
+        private void scanDir(File target, List<ApkItem> container) {
+
+            File[] files = target.listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    String name = pathname.getName();
+                    return pathname.isFile() && name.endsWith(".apk");
+                }
+            });
+            if (files != null && files.length > 0) {
+                for (File file : files) {
+                    ApkItem item = new ApkItem(AutoInstallActivity.this, file.getAbsolutePath());
+                    container.add(item);
+                }
+            }
+//            if (target.isDirectory()) {
+//                File[] files = target.listFiles();
+//                if (files == null || files.length <= 0) {
+//                    return;
+//                }
+//
+//                for (File file : files) {
+//                    scanDir(file, container);
+//                }
+//            } else if (target.isFile() && target.getName().endsWith(".apk")) {
+//                ApkItem item = new ApkItem(AutoInstallActivity.this, target.getAbsolutePath());
+//                container.add(item);
+//            }
+        }
     }
 }

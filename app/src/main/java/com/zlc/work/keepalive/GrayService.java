@@ -23,7 +23,7 @@ public class GrayService extends Service {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2) {
             // 直接new Notification，通知栏不会显示
             startForeground(GRAY_SERVICE_ID, new Notification());
-        } else {
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O){
             Intent gray = new Intent(this, GrayInnerService.class);
             startService(gray);
             startForeground(GRAY_SERVICE_ID, new Notification());

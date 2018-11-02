@@ -21,8 +21,14 @@
         android:layout_height="wrap_content"
         android:text="Auto Install"
         android:textAllCaps="false"
-        app:layout_constraintLeft_toRightOf="@+id/deeplink"
-        tools:layout_editor_absoluteX="88dp"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintLeft_toRightOf="@+id/deeplink" />
+
+    <Button
+        android:id="@+id/webview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Webview"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toRightOf="@+id/autoinstall" />
 
 </android.support.constraint.ConstraintLayout>

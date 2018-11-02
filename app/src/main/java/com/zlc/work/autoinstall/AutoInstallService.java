@@ -66,8 +66,6 @@ public class AutoInstallService extends AccessibilityService {
         fillPassword(rootNode, password);
 
         findButtonTextAndClick(rootNode, "确定");
-        // 自动安装
-        performAutoInstall(event);
     }
 
     private void fillPassword(AccessibilityNodeInfo rootNode, String password) {
@@ -103,14 +101,19 @@ public class AutoInstallService extends AccessibilityService {
         AccessibilityNodeInfo rootNode = getRootInActiveWindow();
         if (rootNode == null) return;
 
-        findCheckBoxTextAndClick(rootNode, "安装后删除安装包");
-        findCheckBoxTextAndClick(rootNode, "继续安装");
+        findCheckBoxTextAndClick(rootNode, "安装后删除安装包");  // vivo
+        findCheckBoxTextAndClick(rootNode, "继续安装", true);  // 华为
+
+        findButtonTextAndClick(rootNode, "允许全部安装");
+        findButtonTextAndClick(rootNode, "仅允许本次安装");
         if (isNotAD(rootNode)) {
             findButtonTextAndClick(rootNode, "安装");
         }
-        findButtonTextAndClick(rootNode, "继续安装");
+        findButtonTextAndClick(rootNode, "继续安装", true); // vivo
         findButtonTextAndClick(rootNode, "下一步");
-        findButtonTextAndClick(rootNode, "打开");
+        findButtonTextAndClick(rootNode, "打开");  // 直接启动已安装应用
+        //findButtonTextAndClick(rootNode, "确定");
+        //findButtonTextAndClick(rootNode, "完成");
         // 回收节点
         eventNode.recycle();
         rootNode.recycle();
@@ -118,6 +121,11 @@ public class AutoInstallService extends AccessibilityService {
 
     // 查找带文本的CheckBox，并且模拟点击
     private void findCheckBoxTextAndClick(AccessibilityNodeInfo rootNode, String text) {
+        findCheckBoxTextAndClick(rootNode, text, false);
+    }
+
+    // 查找带文本的CheckBox，并且模拟点击
+    private void findCheckBoxTextAndClick(AccessibilityNodeInfo rootNode, String text, boolean fuzzyMatch) {
         List<AccessibilityNodeInfo> nodes = rootNode.findAccessibilityNodeInfosByText(text);
         if (nodes == null || nodes.isEmpty()) {
             return;
@@ -128,14 +136,21 @@ public class AutoInstallService extends AccessibilityService {
         for (AccessibilityNodeInfo node : nodes) {
             if (node.isEnabled() && node.isCheckable() && node.isClickable()
                     && node.getClassName().equals("android.widget.CheckBox")) {
-                Log.i(TAG, "find target view and perform click with text: " + text);
-                node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                if (fuzzyMatch || TextUtils.equals(text, node.getText())) {
+                    Log.i(TAG, "find target view and perform click with text: " + text);
+                    node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                }
             }
         }
     }
 
     // 查找带文本的按钮，并且模拟点击
     private void findButtonTextAndClick(AccessibilityNodeInfo rootNode, String text) {
+        findButtonTextAndClick(rootNode, text, false);
+    }
+
+    // 查找带文本的按钮，并且模拟点击
+    private void findButtonTextAndClick(AccessibilityNodeInfo rootNode, String text, boolean fuzzyMatch) {
         List<AccessibilityNodeInfo> nodes = rootNode.findAccessibilityNodeInfosByText(text);
         if (nodes == null || nodes.isEmpty()) {
             return;
@@ -144,10 +159,13 @@ public class AutoInstallService extends AccessibilityService {
         Log.i(TAG, "find related view with text: " + text + ", size=" + nodes.size());
         for (AccessibilityNodeInfo node : nodes) {
             if (node.isEnabled() && node.isClickable()
-                    && TextUtils.equals(text, node.getText())  // vivo会出现 <安全安装> <继续安装>
-                    && node.getClassName().equals("android.widget.Button")) {
-                Log.i(TAG, "find target view and perform click with text: " + text);
-                node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    && (node.getClassName().equals("android.widget.Button")
+                    || node.getClassName().equals("android.widget.TextView"))) {
+                // vivo会出现 <安全安装> <继续安装> <继续安装旧版本>
+                if (fuzzyMatch || TextUtils.equals(text, node.getText())) {
+                    Log.i(TAG, "find target view and perform click with text: " + text);
+                    node.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                }
             }
         }
     }
