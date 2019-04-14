@@ -27,6 +27,15 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    // Fresco图片库
+    implementation 'com.facebook.fresco:fresco:1.13.0'
+
+
+    // Zxing 二维码扫描
+    implementation 'com.google.zxing:core:3.3.3'
+    implementation 'com.google.zxing:android-core:3.3.0'
+    implementation 'com.google.zxing:android-integration:3.3.0'
+
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

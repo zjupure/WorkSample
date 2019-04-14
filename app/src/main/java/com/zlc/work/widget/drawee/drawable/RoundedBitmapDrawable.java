@@ -1,0 +1,306 @@
+package com.zlc.work.widget.drawee.drawable;
+
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.Nullable;
+
+
+
+import java.lang.ref.WeakReference;
+import java.util.Arrays;
+
+/**
+ * author: liuchun
+ * date: 2017/11/6
+ */
+public class RoundedBitmapDrawable extends BitmapDrawable
+        implements Rounded, TransfromableDrawable {
+
+    private boolean mIsCircle = false;
+    private boolean mRadiiNonZero = false;
+    private final float[] mCornerRadii = new float[8];
+    final float[] mBorderRadii = new float[8];
+
+    final RectF mRootBounds = new RectF();
+    final RectF mPrevRootBounds = new RectF();
+    final RectF mBitmapBounds = new RectF();
+    final RectF mDrawableBounds = new RectF();
+
+    final Matrix mBoundsTransform = new Matrix();
+    final Matrix mPrevBoundsTransform = new Matrix();
+
+    final Matrix mParentTransform = new Matrix();
+    final Matrix mPrevParentTransform = new Matrix();
+    final Matrix mInverseParentTransform = new Matrix();
+
+    final Matrix mTransform = new Matrix();
+    private float mBorderWidth = 0;
+    private int mBorderColor = Color.TRANSPARENT;
+    //private float mPadding = 0;
+
+    private final Path mPath = new Path();
+    private final Path mBorderPath = new Path();
+    private boolean mIsPathDirty = true;
+    private final Paint mPaint = new Paint();
+    private final Paint mBorderPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private boolean mIsShaderTransformDirty = true;
+    private WeakReference<Bitmap> mLastBitmap;
+
+    private TransformCallback mTransformCallback;
+
+    public RoundedBitmapDrawable(Resources res, Bitmap bitmap) {
+        this(res, bitmap, null);
+    }
+
+    public RoundedBitmapDrawable(Resources res, Bitmap bitmap, @Nullable Paint paint) {
+        super(res, bitmap);
+        if (paint != null) {
+            mPaint.set(paint);
+        }
+
+        mPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+        mBorderPaint.setStyle(Paint.Style.STROKE);
+    }
+
+    /**
+     * Creates a new RoundedBitmapDrawable from the given BitmapDrawable.
+     * @param res resources to use for this drawable
+     * @param bitmapDrawable bitmap drawable containing the bitmap to be used for this drawable
+     * @return the RoundedBitmapDrawable that is created
+     */
+    public static RoundedBitmapDrawable fromBitmapDrawable(
+            Resources res,
+            BitmapDrawable bitmapDrawable) {
+        return new RoundedBitmapDrawable(res, bitmapDrawable.getBitmap(), bitmapDrawable.getPaint());
+    }
+
+    /**
+     * Sets whether to round as circle.
+     *
+     * @param isCircle whether or not to round as circle
+     */
+    @Override
+    public void setCircle(boolean isCircle) {
+        mIsCircle = isCircle;
+        mIsPathDirty = true;
+        invalidateSelf();
+    }
+
+    /** Returns whether or not this drawable rounds as circle. */
+    public boolean isCircle() {
+        return mIsCircle;
+    }
+
+    /**
+     * Specify radius for the corners of the rectangle. If this is > 0, then the
+     * drawable is drawn in a round-rectangle, rather than a rectangle.
+     * @param radius the radius for the corners of the rectangle
+     */
+    @Override
+    public void setRadius(float radius) {
+        //Preconditions.checkState(radius >= 0);
+        Arrays.fill(mCornerRadii, radius);
+        mRadiiNonZero = (radius != 0);
+        mIsPathDirty = true;
+        invalidateSelf();
+    }
+
+    /**
+     * Specify radii for each of the 4 corners. For each corner, the array
+     * contains 2 values, [X_radius, Y_radius]. The corners are ordered
+     * top-left, top-right, bottom-right, bottom-left
+     * @param radii the x and y radii of the corners
+     */
+    @Override
+    public void setRadii(float[] radii) {
+        if (radii == null) {
+            Arrays.fill(mCornerRadii, 0);
+            mRadiiNonZero = false;
+        } else {
+            //Preconditions.checkArgument(radii.length == 8, "radii should have exactly 8 values");
+            System.arraycopy(radii, 0, mCornerRadii, 0, 8);
+            mRadiiNonZero = false;
+            for (int i = 0; i < 8; i++) {
+                mRadiiNonZero |= (radii[i] > 0);
+            }
+        }
+        mIsPathDirty = true;
+        invalidateSelf();
+    }
+
+    /** Gets the radii. */
+    public float[] getRadii() {
+        return mCornerRadii;
+    }
+
+    /**
+     * Sets the border
+     * @param color of the border
+     * @param width of the border
+     */
+    @Override
+    public void setBorder(int color, float width) {
+        if (mBorderColor != color || mBorderWidth != width) {
+            mBorderColor = color;
+            mBorderWidth = width;
+            mIsPathDirty = true;
+            invalidateSelf();
+        }
+    }
+
+    /** Gets the border color. */
+    public int getBorderColor() {
+        return mBorderColor;
+    }
+
+    /** Gets the border width. */
+    public float getBorderWidth() {
+        return mBorderWidth;
+    }
+
+    @Override
+    public void setTransformCallback(TransformCallback transformCallback) {
+        mTransformCallback = transformCallback;
+    }
+
+    @Override
+    public void setAlpha(int alpha) {
+        if (alpha != mPaint.getAlpha()) {
+            mPaint.setAlpha(alpha);
+            super.setAlpha(alpha);
+            invalidateSelf();
+        }
+    }
+
+    @Override
+    public void setColorFilter(ColorFilter colorFilter) {
+        mPaint.setColorFilter(colorFilter);
+        super.setColorFilter(colorFilter);
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        if (!shouldRound()) {
+            super.draw(canvas);
+            return;
+        }
+
+        updateTransform();
+        updatePath();
+        updatePaint();
+        int saveCount = canvas.save();
+        canvas.concat(mInverseParentTransform);
+        canvas.drawPath(mPath, mPaint);
+        if (mBorderWidth > 0) {
+            mBorderPaint.setStrokeWidth(mBorderWidth);
+            mBorderPaint.setColor(multiplyColorAlpha(mBorderColor, mPaint.getAlpha()));
+            canvas.drawPath(mBorderPath, mBorderPaint);
+        }
+        canvas.restoreToCount(saveCount);
+    }
+
+    /**
+     * If both the radii and border width are zero, there is nothing to round.
+     */
+    boolean shouldRound() {
+        return (mIsCircle || mRadiiNonZero || mBorderWidth > 0) && getBitmap() != null;
+    }
+
+    private void updateTransform() {
+        if (mTransformCallback != null) {
+            mTransformCallback.getTransform(mParentTransform);
+            mTransformCallback.getRootBounds(mRootBounds);
+        } else {
+            mParentTransform.reset();
+            mRootBounds.set(getBounds());
+        }
+
+        mBitmapBounds.set(0, 0, getBitmap().getWidth(), getBitmap().getHeight());
+        mDrawableBounds.set(getBounds());
+        mBoundsTransform.setRectToRect(mBitmapBounds, mDrawableBounds, Matrix.ScaleToFit.FILL);
+
+        if (!mParentTransform.equals(mPrevParentTransform) ||
+                !mBoundsTransform.equals(mPrevBoundsTransform)) {
+            mIsShaderTransformDirty = true;
+            mParentTransform.invert(mInverseParentTransform);
+            mTransform.set(mParentTransform);
+            mTransform.preConcat(mBoundsTransform);
+            mPrevParentTransform.set(mParentTransform);
+            mPrevBoundsTransform.set(mBoundsTransform);
+        }
+
+        if (!mRootBounds.equals(mPrevRootBounds)) {
+            mIsPathDirty = true;
+            mPrevRootBounds.set(mRootBounds);
+        }
+    }
+
+    private void updatePath() {
+        if (mIsPathDirty) {
+            mBorderPath.reset();
+            mRootBounds.inset(mBorderWidth/2, mBorderWidth/2);
+            if (mIsCircle) {
+                float radius = Math.min(mRootBounds.width(), mRootBounds.height())/2;
+                mBorderPath.addCircle(
+                        mRootBounds.centerX(), mRootBounds.centerY(), radius, Path.Direction.CW);
+            } else {
+                for (int i = 0; i < mBorderRadii.length; i++) {
+                    mBorderRadii[i] = mCornerRadii[i] - mBorderWidth/2; // + mPadding
+                }
+                mBorderPath.addRoundRect(mRootBounds, mBorderRadii, Path.Direction.CW);
+            }
+            mRootBounds.inset(-mBorderWidth/2, -mBorderWidth/2);
+
+            mPath.reset();
+            mRootBounds.inset(mBorderWidth/2, mBorderWidth/2);
+            if (mIsCircle) {
+                mPath.addCircle(
+                        mRootBounds.centerX(),
+                        mRootBounds.centerY(),
+                        Math.min(mRootBounds.width(), mRootBounds.height())/2,
+                        Path.Direction.CW);
+            } else {
+                mPath.addRoundRect(mRootBounds, mCornerRadii, Path.Direction.CW);
+            }
+            mRootBounds.inset(-mBorderWidth/2, -mBorderWidth/2);
+            mPath.setFillType(Path.FillType.WINDING);
+            mIsPathDirty = false;
+        }
+    }
+
+    private void updatePaint() {
+        Bitmap bitmap = getBitmap();
+        if (mLastBitmap == null || mLastBitmap.get() != bitmap) {
+            mLastBitmap = new WeakReference<Bitmap>(bitmap);
+            mPaint.setShader(new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+            mIsShaderTransformDirty = true;
+        }
+        if (mIsShaderTransformDirty) {
+            mPaint.getShader().setLocalMatrix(mTransform);
+            mIsShaderTransformDirty = false;
+        }
+    }
+
+    private int multiplyColorAlpha(int color, int alpha) {
+        if (alpha == 255) {
+            return color;
+        }
+        if (alpha == 0) {
+            return color & 0x00FFFFFF;
+        }
+        alpha = alpha + (alpha >> 7); // make it 0..256
+        int colorAlpha = color >>> 24;
+        int multipliedAlpha = colorAlpha * alpha >> 8;
+        return (multipliedAlpha << 24) | (color & 0x00FFFFFF);
+    }
+}

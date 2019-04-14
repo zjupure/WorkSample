@@ -213,12 +213,6 @@ public class QiyiH5TokenActivity extends AppCompatActivity implements TextWatche
     private static String decryptData(String data) {
         byte[] bytes = Base64.decode(data.getBytes(), Base64.NO_WRAP);
 
-//        StringBuilder log = new StringBuilder();
-//        for (byte b : bytes) {
-//            log.append(Md5Util.byteToHex(b)).append(" ");
-//        }
-//        Log.i(TAG, "base64 decoded array length: " + bytes.length + ", content: " + log.toString());
-
         String decodedString = new String(bytes);
         StringBuilder builder = new StringBuilder();
         // 解密数据
