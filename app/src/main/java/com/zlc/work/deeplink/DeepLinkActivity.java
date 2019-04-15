@@ -40,6 +40,8 @@ public class DeepLinkActivity extends AppCompatActivity implements TextWatcher, 
     @BindView(R.id.send_intent) Button sendIntent;
     @BindView(R.id.save_link) Button saveLink;
 
+    private static final String GAME_URL = "iqiyi://mobile/register_business/game?pluginParams=%257B%2522biz_params%2522%253A%257B%2522biz_params%2522%253A%2522%2522%252C%2522biz_statistics%2522%253A%2522block%253DbizDemo%2526partner%253DbizDemo%2526p1%253D%2522%252C%2522biz_extend_params%2522%253A%2522%257B%25CE%25B2qipu_id%25CE%25B2%253A%25CE%25B2209523020%25CE%25B2%257D%2522%252C%2522biz_sub_id%2522%253A%25221%2522%257D%257D%250A";
+
     private Uri mUri;
 
     @Override
@@ -77,6 +79,7 @@ public class DeepLinkActivity extends AppCompatActivity implements TextWatcher, 
 
             }
         });
+        resultInput.setText(GAME_URL);
 
         sendIntent.setOnClickListener(this);
         saveLink.setOnClickListener(this);

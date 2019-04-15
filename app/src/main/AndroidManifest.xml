@@ -11,6 +11,9 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.LOCAL_MAC_ADDRESS"/>
+
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
     <!-- 存储卡访问相关权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -26,8 +29,9 @@
         android:supportsRtl="true"
         android:name=".MainApplication"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_config"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.zlc.work.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,13 +40,13 @@
         </activity>
 
         <!-- DeepLink跳转页面 -->
-        <activity android:name=".deeplink.DeepLinkActivity"
+        <activity android:name="com.zlc.work.deeplink.DeepLinkActivity"
             android:label="@string/deeplink" />
-        <activity android:name=".deeplink.QiyiDeepLinkActivity"
+        <activity android:name="com.zlc.work.deeplink.QiyiDeepLinkActivity"
             android:label="@string/iqiyi_deeplink"/>
-        <activity android:name=".deeplink.QiyiRegisterBizActivity"
+        <activity android:name="com.zlc.work.deeplink.QiyiRegisterBizActivity"
             android:label="@string/iqiyi_register_biz"/>
-        <activity android:name=".deeplink.QiyiH5TokenActivity"
+        <activity android:name="com.zlc.work.deeplink.QiyiH5TokenActivity"
             android:label="@string/iqiyi_h5_token" />
 
         <activity android:name=".media.PlayerActivity"
@@ -64,14 +68,18 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
+        <!-- Fresco图片加载 -->
+        <activity android:name=".image.FrescoActivity"
+            android:label="@string/fresco"/>
+
         <!-- Webview页面 -->
-        <activity android:name=".webview.WebviewActivity"
+        <activity android:name="com.zlc.work.webview.WebviewActivity"
             android:label="@string/webview" />
 
         <!-- 自动安装功能 -->
-        <activity android:name=".autoinstall.AutoInstallActivity"
+        <activity android:name="com.zlc.work.autoinstall.AutoInstallActivity"
             android:label="@string/accessibility_title"/>
-        <service android:name=".autoinstall.AutoInstallService"
+        <service android:name="com.zlc.work.autoinstall.AutoInstallService"
             android:process=":install"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
@@ -83,8 +91,21 @@
                 android:resource="@xml/accessibility_config" />
         </service>
 
+        <service
+            android:name="com.zlc.work.autoinstall.LocalVpnService"
+            android:permission="android.permission.BIND_VPN_SERVICE"
+            android:enabled="true"
+            android:exported="false">
+
+            <intent-filter>
+
+                <action
+                    android:name="android.net.VpnService" />
+            </intent-filter>
+        </service>
+
         <!-- https://android.googlesource.com/platform/packages/apps/PackageInstaller/+/master/AndroidManifest.xml -->
-        <activity android:name=".autoinstall.ApkInstallerActivity">
+        <activity android:name="com.zlc.work.autoinstall.ApkInstallerActivity">
             <intent-filter android:priority="1">
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.INSTALL_PACKAGE" />
@@ -117,9 +138,9 @@
         </provider>
 
         <!-- 进程保活 -->
-        <service android:name=".keepalive.GrayService" />
-        <service android:name=".keepalive.GrayService$GrayInnerService" />
-        <receiver android:name=".keepalive.GrayReceiver">
+        <service android:name="com.zlc.work.keepalive.GrayService" />
+        <service android:name="com.zlc.work.keepalive.GrayService$GrayInnerService" />
+        <receiver android:name="com.zlc.work.keepalive.GrayReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

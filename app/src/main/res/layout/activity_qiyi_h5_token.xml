@@ -30,6 +30,7 @@
                 style="@style/deeplink_editortext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:maxLines="2"
                 android:hint="iqiyi://mobile/player"/>
         </LinearLayout>
 
@@ -49,7 +50,8 @@
                 android:id="@+id/register_params"
                 style="@style/deeplink_editortext"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:maxLines="2"/>
         </LinearLayout>
 
         <LinearLayout
@@ -68,6 +70,7 @@
                 style="@style/deeplink_editortext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:maxLines="2"
                 android:enabled="false"/>
         </LinearLayout>
 
@@ -88,7 +91,29 @@
                 style="@style/deeplink_editortext"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="播放一出好戏"/>
+                android:maxLines="2"
+                android:hint="筑梦情缘第1集"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="44dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/deeplink_textview"
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:text="icon_url" />
+
+            <EditText
+                android:id="@+id/icon_image"
+                style="@style/deeplink_editortext"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:maxLines="2"
+                android:hint=""/>
         </LinearLayout>
 
         <View

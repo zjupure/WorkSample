@@ -20,3 +20,5 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 -dontwarn tv.danmaku.ijk.media.exo.**
+
+#-ignorewarnings

@@ -85,37 +85,39 @@ public class AutoInstallService extends AccessibilityService {
      * 自动点击安装apk文件
      */
     private void performAutoInstall(AccessibilityEvent event) {
-        AccessibilityNodeInfo eventNode = event.getSource();
-        if (eventNode == null) {
-            performGlobalAction(GLOBAL_ACTION_RECENTS); //打开最近页面
-            mHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    //返回安装页面
-                    performGlobalAction(GLOBAL_ACTION_BACK);
-                }
-            }, DELAY_PAGE);
-            return;
-        }
+//        AccessibilityNodeInfo eventNode = event.getSource();
+//        if (eventNode == null) {
+//            performGlobalAction(GLOBAL_ACTION_RECENTS); //打开最近页面
+//            mHandler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    //返回安装页面
+//                    performGlobalAction(GLOBAL_ACTION_BACK);
+//                }
+//            }, DELAY_PAGE);
+//            return;
+//        }
 
         AccessibilityNodeInfo rootNode = getRootInActiveWindow();
         if (rootNode == null) return;
 
         findCheckBoxTextAndClick(rootNode, "安装后删除安装包");  // vivo
         findCheckBoxTextAndClick(rootNode, "继续安装", true);  // 华为
+        findCheckBoxTextAndClick(rootNode, "不再提示");  // 华为
 
+        findButtonTextAndClick(rootNode, "允许");
         findButtonTextAndClick(rootNode, "允许全部安装");
         findButtonTextAndClick(rootNode, "仅允许本次安装");
         if (isNotAD(rootNode)) {
             findButtonTextAndClick(rootNode, "安装");
         }
-        findButtonTextAndClick(rootNode, "继续安装", true); // vivo
+        findButtonTextAndClick(rootNode, "继续安装", true); // vivo, 华为
         findButtonTextAndClick(rootNode, "下一步");
         findButtonTextAndClick(rootNode, "打开");  // 直接启动已安装应用
         //findButtonTextAndClick(rootNode, "确定");
         //findButtonTextAndClick(rootNode, "完成");
         // 回收节点
-        eventNode.recycle();
+        //eventNode.recycle();
         rootNode.recycle();
     }
 

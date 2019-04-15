@@ -22,7 +22,7 @@ public class ResourcesHook {
 //            // we wont hook resources for static lossless webp load
 //            return;
 //        }
-        Resources resources = new ResourcesCompat(context, context.getResources());
+        Resources resources = createCompatResources(context);
         Reflector reflector = Reflector.on(context);
         reflector.set("mResources", resources);
 
@@ -56,5 +56,46 @@ public class ResourcesHook {
                 }
             }
         }
+    }
+
+    private static Resources createCompatResources(Context context) {
+        Resources hostResources = context.getResources();
+        String clsName = hostResources.getClass().getName();
+        Resources resources = null;
+//        if (isMiui(clsName)) {
+//            resources = createMiuiResource(context, hostResources);
+//        } else {
+//            resources = createRawResource(context, hostResources);
+//        }
+        return resources;
+    }
+
+    private static boolean isMiui(String resClsName) {
+        return "android.content.res.MiuiResources".equals(resClsName);
+    }
+
+    private static boolean isHuawei(String resClsName) {
+        return "android.content.res.HwResources".equals(resClsName);
+    }
+
+    private static boolean isVivo(String resClsName) {
+        return "android.content.res.VivoResources".equals(resClsName);
+    }
+
+    private static boolean isOppo(String resClsName) {
+        return false;
+        //return "android.content.res.OppoResources"
+    }
+
+    private static boolean isNubia(String resClsName) {
+        return "android.content.res.NubiaResources".equals(resClsName);
+    }
+
+    private static boolean isRawResources(String resClsName) {
+        return "android.content.res.Resources".equals(resClsName);
+    }
+
+    private static boolean isNotRawResources(String resClsName) {
+        return !isRawResources(resClsName);
     }
 }

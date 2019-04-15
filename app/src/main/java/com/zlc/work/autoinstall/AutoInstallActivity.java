@@ -1,8 +1,10 @@
 package com.zlc.work.autoinstall;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.VpnService;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +41,9 @@ import butterknife.ButterKnife;
 public class AutoInstallActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQ_STORAGE = 100;
+    //private static final String APK_URL = "https://c1412a00137604931389140a17b04c66.dd.cdntips.com/imtt.dd.qq.com/16891/1B2B0537456F2383B2DEAE230B65F902.apk?mkey=5be3b95665e32a08&f=9870&fsname=com.tencent.news_5.6.90_5690.apk&csr=1bbd&cip=101.227.12.253&proto=https";
+
+    private static final String APK_URL = "https://apkcdn.dsgame.iqiyi.com/cardgame/upload/unite/game/20181107/8300_1541581913_hmw_1.apk";
 
     @BindView(R.id.vivo_account) EditText vivoAccountInput;
     @BindView(R.id.vivo_password) EditText vivoPwdInput;
@@ -68,6 +73,8 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
         mAdapter = new ApkRecyclerAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
         collectApkInfos();
+
+        OemInstallUtil.downloadApkByPartner(this, APK_URL);
     }
 
     @Override
@@ -88,7 +95,8 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQ_STORAGE && grantResults.length > 0
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            installApk();
+            //installApk();
+            collectApkInfos();
         }
     }
 
@@ -105,6 +113,16 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
         task.execute();
     }
 
+    private void startVpnService() {
+        Intent intent = VpnService.prepare(this);
+        if (intent != null) {
+            startActivityForResult(intent, 100);
+        }
+
+        Intent vpnIntent = new Intent(this, LocalVpnService.class);
+        startService(vpnIntent);
+    }
+
     private void installApk() {
 //        if (jumpToSettingsIfNeed()) {
 //            return;
@@ -116,6 +134,7 @@ public class AutoInstallActivity extends AppCompatActivity implements View.OnCli
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQ_STORAGE);
             return;
         }
+        //startVpnService();
 
         File extDir = Environment.getExternalStorageDirectory();
         if (extDir != null && extDir.exists() && extDir.canRead()) {

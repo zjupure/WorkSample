@@ -32,6 +32,14 @@
         android:layout_toRightOf="@+id/autoinstall" />
 
     <Button
+        android:id="@+id/image_fresco"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fresco"
+        android:textAllCaps="false"
+        android:layout_toRightOf="@+id/webview"/>
+
+    <Button
         android:id="@+id/player"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

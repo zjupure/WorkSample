@@ -97,6 +97,7 @@
         android:id="@+id/deeplink_input_result"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLines="2"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp" />
 

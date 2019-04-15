@@ -8,6 +8,8 @@
 
     <string name="player">Player</string>
 
+    <string name="fresco">Fresco</string>
+
     <string name="webview">Webview</string>
 
     <string name="h5_token_json_tips">H5 Token JSON数据结果:</string>

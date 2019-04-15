@@ -7,9 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.content.FileProvider;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.ZipFile;
 
 /**
@@ -37,15 +40,45 @@ public class IoUtil {
      * 获取文件URI
      */
     public static Uri getUriFromFile(Context context, File file) {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            try {
-//                String authority = context.getPackageName() + ".fileprovider";
-//                return FileProvider.getUriForFile(context, authority, file);
-//            } catch (IllegalArgumentException e) {
-//                // ignore
-//            }
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                String authority = context.getPackageName() + ".fileprovider";
+                return FileProvider.getUriForFile(context, authority, file);
+            } catch (IllegalArgumentException e) {
+                // ignore
+            }
+        }
         return Uri.fromFile(file);
+    }
+
+    /**
+     * 拷贝到文件
+     */
+    public static boolean copyToFile(InputStream inputStream, File destFile) {
+        destFile.getParentFile().mkdirs();
+        if (destFile.exists()) {
+            destFile.delete();
+        }
+        FileOutputStream out = null;
+        BufferedOutputStream bos = null;
+        try {
+            destFile.createNewFile();
+            out = new FileOutputStream(destFile);
+            bos = new BufferedOutputStream(out);
+            byte[] buffer = new byte[4096];
+            int bytesRead = -1;
+            while ((bytesRead = inputStream.read(buffer)) >= 0) {
+                bos.write(buffer, 0, bytesRead);
+            }
+            bos.flush();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            close(bos);
+            close(out);
+        }
+        return false;
     }
 
 

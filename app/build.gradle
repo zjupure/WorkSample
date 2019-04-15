@@ -4,11 +4,16 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.zlc.work"
-        minSdkVersion 16
+        minSdkVersion 14
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilter 'armeabi'
+            abiFilter 'arm64-v8a'
+        }
     }
     buildTypes {
         release {
@@ -16,8 +21,33 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
     lintOptions {
         abortOnError false
+    }
+//    splits {
+//        abi {
+//            enable true
+//            reset()
+//            include 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+//            universalApk true
+//        }
+//    }
+}
+
+import com.android.build.OutputFile
+// 处理versionCode冲突
+ext.abiCodes = ['armeabi': 0, 'armeabi-v7a': 1, "arm64-v8a": 2]
+android.applicationVariants.all { variant ->
+    variant.outputs.each { output ->
+        def baseAbiVersionCode = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+        if (baseAbiVersionCode != null) {
+            output.versionCodeOverride = baseAbiVersionCode * 1000 + variant.versionCode
+        }
     }
 }
 
@@ -32,11 +62,16 @@ dependencies {
 
     annotationProcessor project(':compiler')
 
+    def GLIDE_VERSION = "4.9.0"
+    implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
+    annotationProcessor "com.github.bumptech.glide:compiler:${GLIDE_VERSION}"
+    implementation "com.zlc.glide:webpdecoder:1.5.4.9.0"
+
     // Fresco图片库
-    implementation 'com.facebook.fresco:fresco:1.13.0'
-    implementation 'com.facebook.fresco:animated-gif:1.13.0'
-    implementation 'com.facebook.fresco:animated-webp:1.13.0'
-    implementation 'com.facebook.fresco:webpsupport:1.13.0'
+    implementation 'com.facebook.fresco:fresco:1.12.0'
+    implementation 'com.facebook.fresco:animated-gif:1.12.0'
+    implementation 'com.facebook.fresco:animated-webp:1.12.0'
+    implementation 'com.facebook.fresco:webpsupport:1.12.0'
 
     //optional, help to generate the final application
     //provided('com.tencent.tinker:tinker-android-anno:1.9.1')
@@ -70,11 +105,7 @@ dependencies {
 }
 
 
-//apply plugin: "stripclass"
-
-
 apply plugin: 'AndResGuard'
-
 andResGuard {
     // mappingFile = file("./resource_mapping.txt")
     mappingFile = null

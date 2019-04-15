@@ -58,6 +58,8 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
 
     private final List<Pair<String, String>> mUrlData = new ArrayList<>();
 
+    private static final String TEST_LINK = "iqiyi://mobile/player?aid=240687701&tvid=2473559100&sid=oTfzI10C&package=cn.quicktv.androidpro&deeplink=jrysdq%3a%2f%2f&ftype=27&subtype=jrysdq_976";
+
     private int mPosition = 0;
     private Uri mFinalUri;
 
@@ -214,7 +216,6 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         if (mFinalUri == null) {
             return;
         }
-
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(mFinalUri);
         PackageManager pm = getPackageManager();

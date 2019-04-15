@@ -64,7 +64,8 @@ public class ScreenUtil {
         } else {
             try {
                 Method method = display.getClass().getDeclaredMethod("getRealMetrics", DisplayMetrics.class);
-                method.invoke(wm.getDefaultDisplay(), dm);
+                method.setAccessible(true);
+                method.invoke(display, dm);
             } catch (Exception e) {
                 display.getMetrics(dm);
             }
@@ -84,7 +85,8 @@ public class ScreenUtil {
         } else {
             try {
                 Method method = display.getClass().getDeclaredMethod("getRealMetrics", DisplayMetrics.class);
-                method.invoke(wm.getDefaultDisplay(), dm);
+                method.setAccessible(true);
+                method.invoke(display, dm);
             } catch (Exception e) {
                 display.getMetrics(dm);
             }
