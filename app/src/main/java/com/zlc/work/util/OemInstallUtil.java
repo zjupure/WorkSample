@@ -51,10 +51,10 @@ public class OemInstallUtil {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 
-//        Pair<String, String> comp = getInstallerActivity(context);
-//        if (comp != null) {
-//            intent.setClassName(comp.first, comp.second);
-//        }
+        Pair<String, String> comp = getInstallerActivity(context);
+        if (comp != null) {
+            intent.setClassName(comp.first, comp.second);
+        }
 
         PackageManager pm = context.getPackageManager();
         if (intent.resolveActivity(pm) != null) {

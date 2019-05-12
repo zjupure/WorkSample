@@ -3,6 +3,7 @@ package com.zlc.work.util;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
@@ -17,6 +18,8 @@ import android.text.TextUtils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -199,6 +202,53 @@ public class DeviceUtil {
     }
 
     /**
+     * 获取蓝牙地址
+     */
+    @SuppressLint("MissingPermission")
+    public static String getBluetoothAddresss(@NonNull Context context) {
+        String blueMacAddr = "";
+        boolean hasBluetootchPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH)
+                == PackageManager.PERMISSION_GRANTED;
+        if (hasBluetootchPermission) {
+            BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+            if (adapter != null) {
+                blueMacAddr = adapter.getAddress();
+            }
+
+            if (TextUtils.isEmpty(blueMacAddr) || FAIL_MAC.contains(blueMacAddr)) {
+                blueMacAddr = getBluetoothAddressByReflect(context);
+            }
+        }
+        // NULL转换成"", avoid NPE
+        if (TextUtils.isEmpty(blueMacAddr)) {
+            blueMacAddr = "";
+        }
+        return blueMacAddr;
+    }
+
+    /**
+     * 通过反射方式获取蓝牙地址
+     */
+    private static String getBluetoothAddressByReflect(@NonNull Context context) {
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null) {
+            try {
+                Field serviceField = adapter.getClass().getDeclaredField("mService");
+                serviceField.setAccessible(true);
+                Object manager = serviceField.get(adapter);
+
+                if (manager != null) {
+                    Method method = manager.getClass().getDeclaredMethod("getAddress");
+                    return (String) method.invoke(manager);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return "";
+    }
+
+    /**
      * 获取当前进程名称
      */
     public static String getProcessName(Context context) {
@@ -248,14 +298,4 @@ public class DeviceUtil {
         File file = new File("/system/app/Superuser.apk");
         return file.exists();
     }
-
-
-
-
-
-
-
-
-
-
 }

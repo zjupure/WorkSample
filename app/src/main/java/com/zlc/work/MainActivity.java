@@ -8,6 +8,9 @@ import android.view.View;
 
 import com.zlc.work.autoinstall.AutoInstallActivity;
 import com.zlc.work.deeplink.DeepLinkActivity;
+import com.zlc.work.media.ExoPlayerActivity;
+import com.zlc.work.media.PlayerActivity;
+import com.zlc.work.media.VideoViewActivity;
 import com.zlc.work.webview.WebviewActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -23,6 +26,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.deeplink).setOnClickListener(this);
         findViewById(R.id.autoinstall).setOnClickListener(this);
         findViewById(R.id.webview).setOnClickListener(this);
+        findViewById(R.id.player).setOnClickListener(this);
+        findViewById(R.id.exo_player).setOnClickListener(this);
+        findViewById(R.id.videoview_player).setOnClickListener(this);
     }
 
 
@@ -39,6 +45,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.webview:
                 intent.setClass(this, WebviewActivity.class);
+                break;
+            case R.id.player:
+                intent.setClass(this, PlayerActivity.class);
+                break;
+            case R.id.exo_player:
+                intent.setClass(this, ExoPlayerActivity.class);
+                break;
+            case R.id.videoview_player:
+                intent.setClass(this, VideoViewActivity.class);
                 break;
             default:
                 break;
