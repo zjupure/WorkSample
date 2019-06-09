@@ -12,9 +12,12 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -29,6 +32,15 @@ dependencies {
 
     // Fresco图片库
     implementation 'com.facebook.fresco:fresco:1.13.0'
+    implementation 'com.facebook.fresco:animated-gif:1.13.0'
+    implementation 'com.facebook.fresco:animated-webp:1.13.0'
+    implementation 'com.facebook.fresco:webpsupport:1.13.0'
+
+    //optional, help to generate the final application
+    //provided('com.tencent.tinker:tinker-android-anno:1.9.1')
+    //tinker's main Android lib
+    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
+
     // airbnb lottie
     implementation('com.airbnb.android:lottie:2.7.0')
 

@@ -3,12 +3,15 @@ package com.zlc.work;
 import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.zlc.work.hook.AmsHooker;
+import com.zlc.work.hook.ResourcesHook;
 import com.zlc.work.keepalive.GrayReceiver;
 import com.zlc.work.keepalive.GrayService;
 
@@ -19,9 +22,16 @@ import com.zlc.work.keepalive.GrayService;
 public class MainApplication extends Application {
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        ResourcesHook.hookResources(base);
+    }
+
+    @Override
     public void onCreate() {
         super.onCreate();
         startKeepAlive();
+        //Fresco.initialize(this);
     }
 
     private void startKeepAlive() {

@@ -2,9 +2,11 @@ package com.zlc.work;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.zlc.work.autoinstall.AutoInstallActivity;
 import com.zlc.work.deeplink.DeepLinkActivity;
@@ -14,6 +16,7 @@ import com.zlc.work.media.VideoViewActivity;
 import com.zlc.work.webview.WebviewActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViews();
     }
 
+
     private void findViews() {
         findViewById(R.id.deeplink).setOnClickListener(this);
         findViewById(R.id.autoinstall).setOnClickListener(this);
@@ -29,6 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.player).setOnClickListener(this);
         findViewById(R.id.exo_player).setOnClickListener(this);
         findViewById(R.id.videoview_player).setOnClickListener(this);
+
+        ImageView imageView = findViewById(R.id.loading_image);
+        Drawable drawable = getResources().getDrawable(R.drawable.player_loading_background);
+        imageView.setImageDrawable(drawable);
     }
 
 
