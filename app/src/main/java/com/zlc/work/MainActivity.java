@@ -25,6 +25,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViews();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     private void findViews() {
         findViewById(R.id.deeplink).setOnClickListener(this);

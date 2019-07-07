@@ -23,12 +23,14 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    api "com.android.support:recyclerview-v7:28.0.0"
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    api "com.android.support:recyclerview-v7:27.1.1"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     // butterknife，自动绑定控件
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    annotationProcessor project(':compiler')
 
     // Fresco图片库
     implementation 'com.facebook.fresco:fresco:1.13.0'
@@ -39,7 +41,7 @@ dependencies {
     //optional, help to generate the final application
     //provided('com.tencent.tinker:tinker-android-anno:1.9.1')
     //tinker's main Android lib
-    compile('com.tencent.tinker:tinker-android-lib:1.9.1')
+    implementation('com.tencent.tinker:tinker-android-lib:1.9.1')
 
     // airbnb lottie
     implementation('com.airbnb.android:lottie:2.7.0')
@@ -65,4 +67,62 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+
+//apply plugin: "stripclass"
+
+
+apply plugin: 'AndResGuard'
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = true
+    useSign = true
+    // It will keep the origin path of your resources when it's true
+    keepRoot = false
+    // It will make the proguard res name in resources string pool to the same value
+    //fixedResName = "iqiyi"
+    // It will merge the duplicated resources, but don't rely on this feature too much.
+    // it's always better to remove duplicated resource from repo
+    mergeDuplicatedRes = true
+    whiteList = [
+            // your icon
+            "R.mipmap.ic_launcher",
+            "R.mipmap.ic_launcher_round",
+            "R.drawable.icon",
+            // for fabric
+            "R.string.com.crashlytics.*",
+            // for google-services
+            "R.string.google_app_id",
+            "R.string.gcm_defaultSenderId",
+            "R.string.default_web_client_id",
+            "R.string.ga_trackingId",
+            "R.string.firebase_database_url",
+            "R.string.google_api_key",
+            "R.string.google_crash_reporting_api_key"
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.16'
+        //path = "/usr/local/bin/7za"
+    }
+
+    /**
+     * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
+     * to the path which assemble[Task] write to
+     **/
+    // finalApkBackupPath = "${project.rootDir}/final.apk"
+
+    /**
+     * Optional: Specifies the name of the message digest algorithm to user when digesting the entries of JAR file
+     * Only works in V1signing, default value is "SHA-1"
+     **/
+    // digestalg = "SHA-256"
 }
