@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -62,6 +63,29 @@ public class CpuAbiUtils {
             cpuAbis = new String[]{Build.CPU_ABI, Build.CPU_ABI2};
         }
         return cpuAbis;
+    }
+
+    public static String getOldPrimaryAbi(Context context) {
+        String primaryAbi = "";
+        try {
+            ApplicationInfo applicationInfo = context.getApplicationInfo();
+            Log.i(TAG, "nativeLib" + applicationInfo.nativeLibraryDir);
+            Field[] fields = applicationInfo.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("primaryCpuAbi".equals(field.getName())) {
+                    primaryAbi = (String) field.get(applicationInfo);
+                    break;
+                }
+            }
+            if (primaryAbi == null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    primaryAbi = Build.SUPPORTED_ABIS[0];
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return primaryAbi;
     }
 
     /**

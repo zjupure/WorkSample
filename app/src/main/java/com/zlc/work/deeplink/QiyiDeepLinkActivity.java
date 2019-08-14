@@ -1,6 +1,7 @@
 package com.zlc.work.deeplink;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -71,6 +72,8 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
 
         initData(savedInstanceState);
         findViews();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void initData(Bundle savedInstanceState) {
@@ -218,6 +221,7 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(mFinalUri);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         PackageManager pm = getPackageManager();
         if (intent.resolveActivity(pm) != null) {
             startActivity(intent);

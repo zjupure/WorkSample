@@ -19,7 +19,7 @@ public class SignUtil {
         PackageManager pm = context.getPackageManager();
         try {
             PackageInfo pi = pm.getPackageInfo(pkgName, PackageManager.GET_SIGNATURES
-                    | PackageManager.GET_SIGNING_CERTIFICATES);
+                    /*| PackageManager.GET_SIGNING_CERTIFICATES*/);
             return pi.signatures[0].toByteArray();
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

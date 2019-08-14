@@ -31,7 +31,8 @@
         android:theme="@style/AppTheme"
         android:networkSecurityConfig="@xml/network_config"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.zlc.work.MainActivity">
+        <activity android:name="com.zlc.work.MainActivity"
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,11 +42,17 @@
 
         <!-- DeepLink跳转页面 -->
         <activity android:name="com.zlc.work.deeplink.DeepLinkActivity"
-            android:label="@string/deeplink" />
+            android:label="@string/deeplink">
+
+        </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiDeepLinkActivity"
-            android:label="@string/iqiyi_deeplink"/>
+            android:label="@string/iqiyi_deeplink">
+
+        </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiRegisterBizActivity"
-            android:label="@string/iqiyi_register_biz"/>
+            android:label="@string/iqiyi_register_biz">
+
+        </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiH5TokenActivity"
             android:label="@string/iqiyi_h5_token" />
 
@@ -75,6 +82,10 @@
         <!-- Webview页面 -->
         <activity android:name="com.zlc.work.webview.WebviewActivity"
             android:label="@string/webview" />
+
+        <!-- ViewPager页面 -->
+        <activity android:name="com.zlc.work.viewpager.ViewPagerActivity"
+            android:label="@string/viewpager" />
 
         <!-- 自动安装功能 -->
         <activity android:name="com.zlc.work.autoinstall.AutoInstallActivity"

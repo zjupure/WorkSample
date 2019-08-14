@@ -13,6 +13,7 @@ import com.zlc.work.deeplink.DeepLinkActivity;
 import com.zlc.work.media.ExoPlayerActivity;
 import com.zlc.work.media.PlayerActivity;
 import com.zlc.work.media.VideoViewActivity;
+import com.zlc.work.viewpager.ViewPagerActivity;
 import com.zlc.work.webview.WebviewActivity;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -42,10 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.player).setOnClickListener(this);
         findViewById(R.id.exo_player).setOnClickListener(this);
         findViewById(R.id.videoview_player).setOnClickListener(this);
-
-        ImageView imageView = findViewById(R.id.loading_image);
-        Drawable drawable = getResources().getDrawable(R.drawable.player_loading_background);
-        imageView.setImageDrawable(drawable);
+        findViewById(R.id.view_pager).setOnClickListener(this);
     }
 
 
@@ -72,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.videoview_player:
                 intent.setClass(this, VideoViewActivity.class);
                 break;
+            case R.id.view_pager:
+                intent.setClass(this, ViewPagerActivity.class);
             default:
                 break;
         }

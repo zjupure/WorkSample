@@ -12,6 +12,8 @@
 
     <string name="webview">Webview</string>
 
+    <string name="viewpager">ViewPager</string>
+
     <string name="h5_token_json_tips">H5 Token JSON数据结果:</string>
     <string name="h5_token_data_tips">H5 Token JSON加密结果:</string>
 

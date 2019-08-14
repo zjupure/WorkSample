@@ -12,6 +12,7 @@ android {
 
         ndk {
             abiFilter 'armeabi'
+            abiFilter 'armeabi-v7a'
             abiFilter 'arm64-v8a'
         }
     }
@@ -39,6 +40,20 @@ android {
 //    }
 }
 
+//// 添加插件
+//apply plugin: 'com.mob.sdk'
+//
+//// 在MobSDK的扩展中注册MobLink的相关信息
+//MobSDK {
+//    appKey "d580ad56b4b5"
+//    appSecret "7fcae59a62342e7e2759e9e397c82bdd"
+//
+//    MobLink {
+//        // 若使用经典版，需打开该设置，否则默认为专业版
+//        preferClassicalEdition true
+//    }
+//}
+
 import com.android.build.OutputFile
 // 处理versionCode冲突
 ext.abiCodes = ['armeabi': 0, 'armeabi-v7a': 1, "arm64-v8a": 2]
@@ -54,7 +69,8 @@ android.applicationVariants.all { variant ->
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    api "com.android.support:recyclerview-v7:27.1.1"
+    implementation 'com.android.support:design:27.1.1'
+    implementation "com.android.support:recyclerview-v7:27.1.1"
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     // butterknife，自动绑定控件
     implementation 'com.jakewharton:butterknife:8.8.1'
@@ -104,6 +120,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
+//apply plugin: "QMess"
 
 apply plugin: 'AndResGuard'
 andResGuard {

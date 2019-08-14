@@ -12,6 +12,12 @@
     <style name="AppButtonStyle" parent="@style/Widget.AppCompat.Button.Colored">
     </style>
 
+    <style name="Theme.PluginInstallDialog" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
     <style name="deeplink_textview">
         <item name="android:gravity">left|center_vertical</item>
         <item name="android:paddingLeft">12dp</item>

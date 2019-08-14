@@ -65,10 +65,12 @@
         android:layout_below="@+id/deeplink"
         android:layout_toRightOf="@+id/exo_player"/>
 
-    <ImageView
-        android:id="@+id/loading_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+    <Button
+        android:id="@+id/view_pager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ViewPager"
+        android:textAllCaps="false"
         android:layout_below="@+id/player"/>
 
 </RelativeLayout>

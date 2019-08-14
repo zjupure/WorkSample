@@ -6,5 +6,4 @@
         <attr name="itv_rightColor" format="color" />
         <attr name="itv_progress" format="integer" />
     </declare-styleable>
-
 </resources>
