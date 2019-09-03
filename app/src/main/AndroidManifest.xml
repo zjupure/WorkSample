@@ -46,7 +46,9 @@
 
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiDeepLinkActivity"
-            android:label="@string/iqiyi_deeplink">
+            android:label="@string/iqiyi_deeplink"
+            android:configChanges="orientation"
+            android:theme="@style/Theme.PluginInstallDialog">
 
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiRegisterBizActivity"

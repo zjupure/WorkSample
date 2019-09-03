@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.zlc.work.R;
 import com.zlc.work.util.ClipboardUtil;
+import com.zlc.work.util.OrientationUtil;
 import com.zlc.work.util.ToastCompat;
 
 import java.util.ArrayList;
@@ -69,11 +70,10 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qiyi_deeplink);
         ButterKnife.bind(this);
+        OrientationUtil.requestScreenOrientation(this, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         initData(savedInstanceState);
         findViews();
-
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void initData(Bundle savedInstanceState) {

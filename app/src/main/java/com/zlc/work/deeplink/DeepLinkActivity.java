@@ -2,6 +2,7 @@ package com.zlc.work.deeplink;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -49,8 +51,14 @@ public class DeepLinkActivity extends AppCompatActivity implements TextWatcher, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_deeplink);
         ButterKnife.bind(this);
-
+        Log.i("DeepLinkActivity", "onCreate");
         findViews();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i("DeepLinkActivity", "onConfigurationChanged");
     }
 
     private void findViews() {
