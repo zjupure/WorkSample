@@ -1,8 +1,10 @@
 package com.zlc.work.deeplink;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +30,7 @@ import com.zlc.work.util.ClipboardUtil;
 import com.zlc.work.util.OrientationUtil;
 import com.zlc.work.util.ToastCompat;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +61,11 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
     @BindView(R.id.deeplink_input_result) EditText mLinkOutput;
 
     @BindView(R.id.send_intent) Button mSendAction;
+    @BindView(R.id.save_link) Button mSaveAction;
 
     private final List<Pair<String, String>> mUrlData = new ArrayList<>();
 
-    private static final String TEST_LINK = "iqiyi://mobile/player?aid=240687701&tvid=2473559100&sid=oTfzI10C&package=cn.quicktv.androidpro&deeplink=jrysdq%3a%2f%2f&ftype=27&subtype=jrysdq_976";
+    private static final String TEST_LINK = "iqiyi://mobile/player?sid=k0dNP1sH&package=com.smile.gifmaker&deeplink=kwai%3a%2f%2f&aid=225041201&tvid=9749815600&subtype=kslqqy_2423&ftype=27";
 
     private int mPosition = 0;
     private Uri mFinalUri;
@@ -70,10 +75,26 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qiyi_deeplink);
         ButterKnife.bind(this);
-        OrientationUtil.requestScreenOrientation(this, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        Log.i("LinkActivity", "onCreate: " + getRequestedOrientation());
+        //OrientationUtil.requestScreenOrientation(this, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         initData(savedInstanceState);
         findViews();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("LinkActivity", "onResume: " + getRequestedOrientation());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Log.i("LinkActivity", "onConfigurationChanged, orientation: " + newConfig.orientation + ", curernt: " + getRequestedOrientation());
+        //OrientationUtil.convertToTranslucent(this);
+
     }
 
     private void initData(Bundle savedInstanceState) {
@@ -125,6 +146,7 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         mUrlInput.setText("http://m.iqiyi.com/");
 
         mSendAction.setOnClickListener(this);
+        mSaveAction.setOnClickListener(this);
     }
 
     private void refresh() {
@@ -192,6 +214,7 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
                 jumpWithLink();
                 break;
             case R.id.save_link:
+                //OrientationUtil.requestScreenOrientation(this, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 saveLinkToClipboard();
                 break;
             default:
@@ -219,6 +242,7 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         if (mFinalUri == null) {
             return;
         }
+        mFinalUri = Uri.parse(TEST_LINK);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(mFinalUri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

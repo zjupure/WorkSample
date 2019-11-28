@@ -47,7 +47,8 @@
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiDeepLinkActivity"
             android:label="@string/iqiyi_deeplink"
-            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|layoutDirection|screenLayout"
             android:theme="@style/Theme.PluginInstallDialog">
 
         </activity>

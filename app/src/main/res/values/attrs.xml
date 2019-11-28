@@ -8,17 +8,34 @@
     </declare-styleable>
 
 
-    <declare-styleable name="BubbleFrameLayout">
-        <attr name="background_color" format="color" />
-        <attr name="shadow_color" format="color" />
-        <attr name="shadow_size" format="dimension" />
-        <attr name="radius" format="dimension" />
-        <attr name="direction" format="enum">
-            <enum name="left" value="1" />
-            <enum name="top" value="2" />
-            <enum name="right" value="3" />
-            <enum name="bottom" value="4" />
+    <declare-styleable name="BubbleLinearLayout">
+        <attr name="bll_arrow_style">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
         </attr>
-        <attr name="offset" format="dimension" />
+
+        <attr name="bll_arrow_orientation">
+            <enum name="top" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+            <enum name="bottom" value="3" />
+            <enum name="none" value="4" />
+        </attr>
+
+        <attr name="bll_arrow_height" format="dimension"/>
+        <attr name="bll_gravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="center_vertical" value="0x10" />
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="center" value="0x11" />
+        </attr>
+        <attr name="bll_arrow_offset" format="dimension" />
+        <attr name="bll_corner_radius" format="dimension" />
+        <attr name="bll_start_color" format="color|reference" />
+        <attr name="bll_end_color" format="color|reference" />
     </declare-styleable>
 </resources>

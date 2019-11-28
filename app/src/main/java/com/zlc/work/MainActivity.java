@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 
 import com.zlc.work.autoinstall.AutoInstallActivity;
@@ -15,6 +16,7 @@ import com.zlc.work.media.VideoViewActivity;
 import com.zlc.work.ui.UiCompActivity;
 import com.zlc.work.viewpager.ViewPagerActivity;
 import com.zlc.work.webview.WebviewActivity;
+import com.zlc.work.widget.bubble.BubblePopupWindow;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = "MainActivity";
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.exo_player).setOnClickListener(this);
         findViewById(R.id.videoview_player).setOnClickListener(this);
         findViewById(R.id.view_pager).setOnClickListener(this);
-        findViewById(R.id.ui_comp).setOnClickListener(this);
+        findViewById(R.id.bubble_anchor).setOnClickListener(this);
     }
 
 
@@ -77,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.view_pager:
                 intent.setClass(this, ViewPagerActivity.class);
                 break;
-            case R.id.ui_comp:
+            case R.id.bubble_anchor:
                 intent.setClass(this, UiCompActivity.class);
                 break;
             default:
@@ -88,5 +90,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (intent.resolveActivity(pm) != null) {
             startActivity(intent);
         }
+        if (R.id.bubble_anchor == v.getId()) {
+            showBubble(v);
+        }
+    }
+
+    private void showBubble(View anchor) {
+        BubblePopupWindow window = new BubblePopupWindow(this);
+        window.setBubbleText("我是一个超长的气泡");
+        //window.show(anchor, Gravity.BOTTOM);
+        window.show(anchor, Gravity.TOP, Gravity.LEFT, 0);
     }
 }

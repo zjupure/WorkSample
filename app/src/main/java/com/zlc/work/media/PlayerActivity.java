@@ -35,6 +35,7 @@ public class PlayerActivity extends AppCompatActivity implements MediaPlayer.OnP
     private static final float PLAY_ARAE_SIZE = 9.0f / 16;
 
     private static final String VIDEO_URL = "http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400";
+    private static final String TRANSPARENT_URL = "asset:///firework_07.mov";
 
     private MediaPlayer mMediaPlayer;
 

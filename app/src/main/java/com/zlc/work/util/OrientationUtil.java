@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -21,11 +24,11 @@ import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_LANDSCAPE;
 import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
 
 /**
- * author: liuchun
- * date: 2019/8/14
+ * Android O && tagetSDK > O透明Activity适配工具类
+ * 针对8.0系统，移除xml里透明主题Activity配置的screenOrientation属性，通过代码动态设置方向
+ * 在Activity#onCreate()里调用{@link #requestScreenOrientation(Activity, int)}即可
  */
 public class OrientationUtil {
-    private static final String TAG = "OrientationUtil";
 
     private static Method sConvertFromTranslucent = null;
     private static Method sConvertToTranslucent = null;
@@ -34,17 +37,27 @@ public class OrientationUtil {
     /**
      * 适配Android 8.0上透明Activity无法请求orientation
      */
-    public static void requestScreenOrientation(Activity activity, int orientation) {
+    public static void requestScreenOrientation(final Activity activity, int orientation) {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O
-                && activity.getApplicationInfo().targetSdkVersion > Build.VERSION_CODES.O
-                && isTranslucentOrFloating(activity) && isFixedOrientation(orientation)) {
+                /*&& activity.getApplicationInfo().targetSdkVersion > Build.VERSION_CODES.O*/
+                && isFixedOrientation(orientation) /*&& isTranslucentOrFloating(activity)*/ ) {
             // 适配Android O透明Activity设置屏幕方向
             // step1: 转成非透明的activity
             convertFromTranslucent(activity);
             // step2: 设置屏幕方向
             setRequestedOrientation(activity, orientation);
             // step3: 转回透明的activity
-            convertToTranslucent(activity);
+            //convertToTranslucent(activity);
+
+            Log.i("LinkActivity", "convertToTranslucent orientation: " + activity.getRequestedOrientation());
+            final Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.i("LinkActivity", "convertToTranslucent");
+                    convertToTranslucent(activity);
+                }
+            }, 5000);
         } else {
             setRequestedOrientation(activity, orientation);
         }
@@ -72,7 +85,7 @@ public class OrientationUtil {
         return isTranslucentOrFloating;
     }
 
-    private static boolean isFixedOrientation(int orientation) {
+    public static boolean isFixedOrientation(int orientation) {
         return isFixedOrientationLandscape(orientation) || isFixedOrientationPortrait(orientation);
     }
 
@@ -95,7 +108,10 @@ public class OrientationUtil {
     private static void setRequestedOrientation(Activity activity, int orientation) {
         try {
             activity.setRequestedOrientation(orientation);
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
+            // Android O透明Activity设置方向
+            e.printStackTrace();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
@@ -122,7 +138,7 @@ public class OrientationUtil {
     /**
      * 把透明Activity转回透明
      */
-    private static boolean convertToTranslucent(Activity activity) {
+    public static boolean convertToTranslucent(Activity activity) {
         try {
             boolean changeCanvasToTranslucent = false;
             Class<?> translucentConversionListenerClass = Class.forName("android.app.Activity$TranslucentConversionListener");
