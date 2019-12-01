@@ -10,6 +10,8 @@
 
     <string name="fresco">Fresco</string>
 
+    <string name="ui_comp">UI COMPONENT</string>
+
     <string name="webview">Webview</string>
 
     <string name="viewpager">ViewPager</string>

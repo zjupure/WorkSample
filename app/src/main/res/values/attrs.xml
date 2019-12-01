@@ -6,4 +6,19 @@
         <attr name="itv_rightColor" format="color" />
         <attr name="itv_progress" format="integer" />
     </declare-styleable>
+
+
+    <declare-styleable name="BubbleFrameLayout">
+        <attr name="background_color" format="color" />
+        <attr name="shadow_color" format="color" />
+        <attr name="shadow_size" format="dimension" />
+        <attr name="radius" format="dimension" />
+        <attr name="direction" format="enum">
+            <enum name="left" value="1" />
+            <enum name="top" value="2" />
+            <enum name="right" value="3" />
+            <enum name="bottom" value="4" />
+        </attr>
+        <attr name="offset" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -2,17 +2,16 @@ package com.zlc.work;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.zlc.work.autoinstall.AutoInstallActivity;
 import com.zlc.work.deeplink.DeepLinkActivity;
 import com.zlc.work.media.ExoPlayerActivity;
 import com.zlc.work.media.PlayerActivity;
 import com.zlc.work.media.VideoViewActivity;
+import com.zlc.work.ui.UiCompActivity;
 import com.zlc.work.viewpager.ViewPagerActivity;
 import com.zlc.work.webview.WebviewActivity;
 
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.exo_player).setOnClickListener(this);
         findViewById(R.id.videoview_player).setOnClickListener(this);
         findViewById(R.id.view_pager).setOnClickListener(this);
+        findViewById(R.id.ui_comp).setOnClickListener(this);
     }
 
 
@@ -72,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.view_pager:
                 intent.setClass(this, ViewPagerActivity.class);
+                break;
+            case R.id.ui_comp:
+                intent.setClass(this, UiCompActivity.class);
+                break;
             default:
                 break;
         }

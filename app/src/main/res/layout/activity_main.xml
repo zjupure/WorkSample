@@ -73,4 +73,12 @@
         android:textAllCaps="false"
         android:layout_below="@+id/player"/>
 
+    <Button
+        android:id="@+id/ui_comp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UI Comp"
+        android:textAllCaps="false"
+        android:layout_below="@+id/player"
+        android:layout_toRightOf="@+id/view_pager"/>
 </RelativeLayout>

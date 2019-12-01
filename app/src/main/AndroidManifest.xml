@@ -75,6 +75,9 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         </activity>
 
+        <activity android:name=".ui.UiCompActivity"
+            android:label="@string/ui_comp" />
+
         <!-- Fresco图片加载 -->
         <activity android:name=".image.FrescoActivity"
             android:label="@string/fresco"/>
