@@ -74,6 +74,15 @@
         android:layout_below="@+id/player"/>
 
     <Button
+        android:id="@+id/opengl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OpenGL"
+        android:textAllCaps="false"
+        android:layout_below="@+id/player"
+        android:layout_toRightOf="@+id/view_pager" />
+
+    <Button
         android:id="@+id/bubble_anchor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -21,6 +21,8 @@
 
     <uses-sdk tools:overrideLibrary="com.google.android.exoplayer2,com.airbnb.lottie"/>
 
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -43,21 +45,25 @@
         <!-- DeepLink跳转页面 -->
         <activity android:name="com.zlc.work.deeplink.DeepLinkActivity"
             android:label="@string/deeplink">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiDeepLinkActivity"
             android:label="@string/iqiyi_deeplink"
-            android:screenOrientation="portrait"
-            android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|layoutDirection|screenLayout"
-            android:theme="@style/Theme.PluginInstallDialog">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiRegisterBizActivity"
-            android:label="@string/iqiyi_register_biz">
+            android:label="@string/iqiyi_register_biz"
+            android:screenOrientation="portrait">
 
         </activity>
         <activity android:name="com.zlc.work.deeplink.QiyiH5TokenActivity"
-            android:label="@string/iqiyi_h5_token" />
+            android:label="@string/iqiyi_h5_token"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".media.PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|smallestScreenSize|layoutDirection|screenLayout"
@@ -92,6 +98,9 @@
         <!-- ViewPager页面 -->
         <activity android:name="com.zlc.work.viewpager.ViewPagerActivity"
             android:label="@string/viewpager" />
+        <!-- OpenGL示例页面 -->
+        <activity android:name="com.zlc.work.opengl.OpenGLActivity"
+            android:label="@string/opengl"/>
 
         <!-- 自动安装功能 -->
         <activity android:name="com.zlc.work.autoinstall.AutoInstallActivity"

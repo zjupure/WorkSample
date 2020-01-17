@@ -242,7 +242,7 @@ public class QiyiDeepLinkActivity extends AppCompatActivity implements TextWatch
         if (mFinalUri == null) {
             return;
         }
-        mFinalUri = Uri.parse(TEST_LINK);
+        //mFinalUri = Uri.parse(TEST_LINK);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(mFinalUri);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

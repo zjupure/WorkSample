@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
-    annotationProcessor project(':compiler')
+    //annotationProcessor project(':compiler')
 
     def GLIDE_VERSION = "4.9.0"
     implementation "com.github.bumptech.glide:glide:${GLIDE_VERSION}"

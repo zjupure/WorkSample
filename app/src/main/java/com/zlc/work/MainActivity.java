@@ -13,6 +13,7 @@ import com.zlc.work.deeplink.DeepLinkActivity;
 import com.zlc.work.media.ExoPlayerActivity;
 import com.zlc.work.media.PlayerActivity;
 import com.zlc.work.media.VideoViewActivity;
+import com.zlc.work.opengl.OpenGLActivity;
 import com.zlc.work.ui.UiCompActivity;
 import com.zlc.work.viewpager.ViewPagerActivity;
 import com.zlc.work.webview.WebviewActivity;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.exo_player).setOnClickListener(this);
         findViewById(R.id.videoview_player).setOnClickListener(this);
         findViewById(R.id.view_pager).setOnClickListener(this);
+        findViewById(R.id.opengl).setOnClickListener(this);
         findViewById(R.id.bubble_anchor).setOnClickListener(this);
     }
 
@@ -78,6 +80,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.view_pager:
                 intent.setClass(this, ViewPagerActivity.class);
+                break;
+            case R.id.opengl:
+                intent.setClass(this, OpenGLActivity.class);
                 break;
             case R.id.bubble_anchor:
                 intent.setClass(this, UiCompActivity.class);
